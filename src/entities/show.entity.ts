@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import ShowCategory from "../enums/show-category.enum"
 
-@Entity()
+@Entity('shows')
 class Show {
   @PrimaryGeneratedColumn()
   id: number
@@ -11,17 +12,17 @@ class Show {
   @Column()
   cover: string
 
-  @Column()
+  @Column({ length: 100 })
   director: string
 
-  @Column()
+  @Column({ length: 200 })
   actors: string
 
-  @Column()
+  @Column({ type: 'longtext' })
   description: string
 
   @Column()
-  category: string
+  category: ShowCategory
 }
 
 export default Show
