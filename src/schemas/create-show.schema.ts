@@ -1,4 +1,6 @@
 import Joi from "joi"
+import ShowCategory from "../enums/show-category.enum"
+import enumToString from "../utils/joi-custom-types.utils"
 
 const createShow = Joi.object({
   title: Joi.string().required(),
@@ -6,7 +8,7 @@ const createShow = Joi.object({
   director: Joi.string().required(),
   actors: Joi.string().required(),
   description: Joi.string().required(),
-  category: Joi.string().required()
+  category: enumToString(ShowCategory)
 })
 
 export default createShow
