@@ -14,6 +14,7 @@ function startRoutes(app: Application) {
   app.use(morgan('tiny'))
 
   app.use(routes)
+
   databaseInitialize()
 }
 
