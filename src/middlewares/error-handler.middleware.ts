@@ -1,12 +1,21 @@
-import { Response } from "express"
+import { NextFunction, Request } from "express"
+import { CustomResponse } from "../interfaces"
+import { HttpException } from "../exceptions"
+import { HTTP_STATUS } from "../enums"
 
-const errorHandler = (error: any, res: Response) => {
-  console.log(error.status)
-  res.status(error.status)
-    .json({
-      error: true,
-      message: error.message
-    })
+const errorHandlerMiddleware = (req: Request, res: CustomResponse, next: NextFunction) => {
+  res.errorHandler = (error: any) => {
+    if (error instanceof HttpException) {
+      res.status(error.status).json({
+        error: true,
+        message: error.message
+      })
+    } else {
+      res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({ error: true })
+    }
+  }
+
+  next()
 }
 
-export default errorHandler
+export default errorHandlerMiddleware
