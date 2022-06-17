@@ -57,6 +57,10 @@ class ShowService {
 
     throw new NotFoundException(`Show com o id ${id} não foi encontrado`)
   }
+
+  async update(id: number) {
+    console.log(id)
+  }
 }
 
 export default ShowService
