@@ -2,7 +2,7 @@ import Joi from "joi"
 import ShowCategory from "../enums/show-category.enum"
 import enumToString from "../utils/joi-custom-types.utils"
 
-const createShow = Joi.object({
+const CreateShowSchema = Joi.object({
   title: Joi.string().required(),
   cover: Joi.string().required(),
   director: Joi.string().required(),
@@ -11,4 +11,4 @@ const createShow = Joi.object({
   category: enumToString(ShowCategory)
 })
 
-export default createShow
+export default CreateShowSchema

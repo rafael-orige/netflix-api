@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { ShowService } from "../services"
 import HTTP_STATUS from "../enums/http-status.enums"
-import errorHandler from "../middlewares/error-handler.middleware"
+import { CustomResponse } from "../interfaces"
 
 const showService = new ShowService()
 
@@ -12,14 +12,14 @@ class ShowController {
     res.send(shows)
   }
 
-  public static async listOne(req: Request, res: Response) {
+  public static async listOne(req: Request, res: CustomResponse) {
     try {
       const { params: { id } } = req
       const show = await showService.listOne(+id)
 
       res.json(show)
     } catch (error) {
-      errorHandler(error, res)
+      res.errorHandler && res.errorHandler(error)
     }
   }
 
@@ -35,7 +35,7 @@ class ShowController {
     }
   }
 
-  public static async delete(req: Request, res: Response) {
+  public static async delete(req: Request, res: CustomResponse) {
     try {
       const { id } = req.params
 
@@ -43,8 +43,7 @@ class ShowController {
 
       res.status(200).json(result)
     } catch (error) {
-      console.log(error)
-      errorHandler(error, res)
+      res.errorHandler && res.errorHandler(error)
     }
   }
 }

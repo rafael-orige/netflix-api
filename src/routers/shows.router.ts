@@ -1,11 +1,13 @@
 import { Router } from "express"
+import passport from "passport"
+
 import { ShowController } from "../controllers"
 import validationMiddleware from "../middlewares/validation.middleware"
 import createShow from "../schemas/create-show.schema"
 
 const ShowsRouter = Router()
 
-ShowsRouter.get("/show", ShowController.list)
+ShowsRouter.get("/show", passport.authenticate('jwt', { session: false }), ShowController.list)
 
 ShowsRouter.get("/show/:id", ShowController.listOne)
 
