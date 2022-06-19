@@ -1,13 +1,11 @@
 import "reflect-metadata"
-import dotenv from "dotenv"
+import "dotenv/config"
 import express, { Application } from "express"
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt"
 import passport from "passport"
 
-import databaseInitialize from "./configs/database/data-source"
+import databaseInitialize from "./src/infrastructure/database/data-source"
 import startRoutes from "./src/routers"
-
-dotenv.config()
 
 const app: Application = express()
 
