@@ -1,57 +1,30 @@
 import "reflect-metadata"
-import express from "express"
-import morgan from "morgan"
-import { DataSource } from "typeorm"
+import "dotenv/config"
+import express, { Application } from "express"
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt"
+import passport from "passport"
 
-const AppDataSource = new DataSource({
-  type: "mysql",
-  host: "localhost",
-  port: 3306,
-  username: "root",
-  password: "abcbanana",
-  database: "netflix"
+import databaseInitialize from "./src/infrastructure/database/data-source"
+import startRoutes from "./src/routers"
+
+const app: Application = express()
+
+const PORT = 8080
+
+const opts = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWT_KEY as string
+}
+
+const strategy = new JwtStrategy(opts, function (payload, done) {
+  console.log(payload)
+  return done(null, {})
 })
 
-AppDataSource.initialize()
-  .then(() => {
-    console.log("Data source connected")
-  })
-  .catch((e) => {
-    console.log(e)
-  })
+passport.use(strategy)
 
-const app: express.Application = express()
-
-const PORT = 3000
-
-const jsonParserMiddleware = express.json()
-
-app.use(jsonParserMiddleware)
-app.use(morgan('tiny'))
-
-app.get("/ping", (request, response) => {
-  response.send("pong")
-})
-
-app.post("/ping/:id", (request, response) => {
-  response.send("pong")
-})
-
-// Atualizaçao de dados
-// Entidade parcialmente
-app.patch("/ping/:id", (request, response) => {
-  response.send("pong")
-})
-
-// Atualizaçao de dados
-// Entidade inteira
-app.put("/ping/:id", (request, response) => {
-  response.send("pong")
-})
-
-app.delete("/ping/:id", (request, response) => {
-  response.send("pong")
-})
+databaseInitialize()
+startRoutes(app)
 
 app.listen(PORT, () => {
   console.log(`Escutando na porta: ${PORT}`)
