@@ -10,6 +10,8 @@ const routes = [
   ShowsRouter,
   UserRouter,
   AuthRouter
+  AuthRouter,
+  EpisodesRouter,
 ]
 
 const jsonParserMiddleware = express.json()
